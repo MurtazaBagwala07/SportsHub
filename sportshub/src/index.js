@@ -1,17 +1,22 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
+import { sportsHubTheme } from "./styles/theme";
 import {BrowserRouter} from 'react-router-dom'
 import { makeServer } from "./server";
 import { ChakraProvider } from '@chakra-ui/react'
 
+
 // Call make Server
 makeServer();
 
-ReactDOM.render(
+const rootElement = document.getElementById("root");
+const root = createRoot(rootElement);
+
+root.render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={sportsHubTheme}>
       <BrowserRouter>
         <App />
       </BrowserRouter>

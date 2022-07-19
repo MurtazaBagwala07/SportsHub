@@ -3,7 +3,7 @@ import { loginService,signUpService } from "../services/services";
 
 const initialState ={
     token: localStorage.getItem('token'),
-    user: localStorage.getItem('user'),
+    user: JSON.parse(localStorage.getItem('user'))
 }
 
 export const signUp = createAsyncThunk('auth/signUp',async(signUpData,thunkAPI)=>{

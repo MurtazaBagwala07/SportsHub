@@ -1,9 +1,16 @@
 import { Flex, Text,Box ,FormControl, FormLabel, Input, Button } from '@chakra-ui/react'
-import React from 'react'
+import React,{useState} from 'react'
 import { Link } from 'react-router-dom'
+import {useDispatch,useSelector} from 'react-redux'
+import {useNavigate} from 'react-router-dom'
+import { signUp } from '../../slices/authSlice'
 
 export const SignUp = () => {
 
+  const dispatch =useDispatch();
+  const navigate =useNavigate();
+  const {token} =useSelector((state)=>state.auth);
+  
   const [signUpForm,setSignUpForm] = useState(
     {
       name:'',
@@ -12,6 +19,11 @@ export const SignUp = () => {
       password:'',
     }
   )
+
+  const signUpHandler=()=>{
+    dispatch(signUp(signUpForm))
+    navigate('/signin')
+  }
 
   const changeHandler=(e)=>{
     setSignUpForm({...signUpForm,[e.target.name]:e.target.value})
@@ -40,7 +52,7 @@ export const SignUp = () => {
           <FormLabel>Password :</FormLabel>
           <Input onChange={(e)=>changeHandler(e)} value={signUpForm.password} name='password' placeholder='Enter Your Password' type="password"/>
         </FormControl>
-        <Button borderRadius='sm' color='primary' w='100%'>Sign Up</Button>
+        <Button onClick={()=>signUpHandler()} borderRadius='sm' color='primary' w='100%'>Sign Up</Button>
         <Text>Already have an account? <Link to='/signin'><Text as='u'>Sign In</Text></Link></Text>
       </Flex>
       

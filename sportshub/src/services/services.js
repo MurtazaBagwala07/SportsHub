@@ -4,6 +4,9 @@ export const loginService=async(userLogin)=>{
     try {
         const response = await axios.post('/api/auth/login',userLogin)
         if(response.status===200||response.status===201){
+            localStorage.setItem('token',response.data.encodedToken)
+            localStorage.setItem('user',response.data.foundUser)
+            console.log(response.data)
             return response.data;
         }
     } catch (error) {

@@ -1,8 +1,31 @@
 import { Flex, Text,Box ,FormControl, FormLabel, Input, Button } from '@chakra-ui/react'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React,{useState} from 'react'
+import { Link ,useNavigate } from 'react-router-dom'
+import {login} from '../../slices/authSlice'
+import {useDispatch,useSelector} from 'react-redux'
 
 export const SignIn = () => {
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {token} = useSelector((state)=>state.auth)
+
+  const [loginForm,setLoginForm] = useState({
+    username:'',
+    password:'',
+  })
+
+  const loginHandler=()=>{
+    console.log(loginForm)
+  }
+
+  const guestLoginHandler=()=>{
+    
+    console.log(loginForm)
+  }
+
+
+
   return (
 
     <Flex boxShadow='dark-lg' h='90vh' align="center" justify='center'>
@@ -11,15 +34,15 @@ export const SignIn = () => {
           <Text fontSize='1.5rem' align="center">Sign In</Text>
         </Box>
         <FormControl>
-          <FormLabel>Email:</FormLabel>
-          <Input placeholder='Enter Email Address' type="email"/>
+          <FormLabel>Username:</FormLabel>
+          <Input onChange={(e)=>setLoginForm({...loginForm,username:e.target.value})} value={loginForm.username} placeholder='Enter Your Username' type="text"/>
         </FormControl>
         <FormControl>
           <FormLabel>Password:</FormLabel>
-          <Input placeholder='Enter Your Password' type="password"/>
+          <Input onChange={(e)=>setLoginForm({...loginForm,password:e.target.value})} value={loginForm.password} placeholder='Enter Your Password' type="password"/>
         </FormControl>
-        <Button borderRadius='sm' color='primary' w='100%'>Sign In</Button>
-        <Button borderRadius='sm' color='primary' w='100%'>Sign In as a Guest</Button>
+        <Button onClick={()=>loginHandler()} borderRadius='sm' color='primary' w='100%'>Sign In</Button>
+        <Button onClick={()=>guestLoginHandler()} borderRadius='sm' color='primary' w='100%'>Sign In as a Guest</Button>
         <Text>Dont have an account? <Link to='/signup'><Text as='u'>Sign Up</Text></Link></Text>
       </Flex>
       

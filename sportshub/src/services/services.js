@@ -135,9 +135,9 @@ export const deleteCommentService =async(postId,commentId,token)=>{
     }
 }
 
-export const likePostService=async(postId,token)=>{
+export const likePostService=async(postID,token)=>{
     try {
-        const response= await axios.post(`/api/posts/like/${postId}`,{},{
+        const response= await axios.post(`/api/posts/like/${postID}`,{},{
             headers:{
                 authorization:token,
             }
@@ -148,9 +148,9 @@ export const likePostService=async(postId,token)=>{
     }
 }
 
-export const unlikePostService=async(postId,token)=>{
+export const unlikePostService=async(postID,token)=>{
     try {
-        const response = await axios.post(`/api/posts/dislike/${postId}`,{},{
+        const response = await axios.post(`/api/posts/dislike/${postID}`,{},{
             headers:{
                 authorization:token,
             }

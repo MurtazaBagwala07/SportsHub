@@ -2,14 +2,16 @@ import { Flex,Avatar,Box, ButtonGroup,Button } from '@chakra-ui/react'
 import {FaHeart ,FaRegHeart,FaBookmark,FaRegBookmark,FaRegCommentAlt,FaEllipsisV } from 'react-icons/fa';
 import React,{useState} from 'react'
 import {openPostModal,closePostModal,setPostModalData} from '../../slices/utilitySlice'
-import {deletePost} from '../../slices/postSlice'
+import {deletePost,likePost,unlikePost} from '../../slices/postSlice'
 import {useSelector,useDispatch} from 'react-redux'
 
 export const Post = ({post}) => {
 
     const [optionModal,setOptionModal] = useState(false)
     const dispatch = useDispatch();
-    const {token} = useSelector((store)=>store.auth)
+    const {token,user} = useSelector((store)=>store.auth)
+
+    const isLiked = post?.likes?.likedBy?.some((likeby) => likeby.username === user.username)
     
     const editHandler=()=>{
         dispatch(openPostModal())
@@ -36,7 +38,12 @@ export const Post = ({post}) => {
         <Box>{post.content}</Box>
         <Flex>
             <ButtonGroup>
-                <Button><FaRegHeart/></Button>
+                {!isLiked &&
+                    <Button onClick={()=>dispatch(likePost({postID:post._id,token}))} ><FaRegHeart/></Button>
+                }
+                {isLiked &&
+                    <Button onClick={()=>dispatch(unlikePost({postID:post._id,token}))}><FaHeart/></Button>
+                }
                 <Button><FaRegCommentAlt/></Button> 
                 <Button><FaRegBookmark/></Button>
             </ButtonGroup>

@@ -60,18 +60,18 @@ export const removeBookmark = createAsyncThunk('posts/removeBookmark',async({pos
     }
 })
 
-export const likePost = createAsyncThunk('posts/likePost',async({postId,token},ThunkAPI)=>{
+export const likePost = createAsyncThunk('posts/likePost',async({postID,token},ThunkAPI)=>{
     try {
-        const response = await likePostService(postId,token)
+        const response = await likePostService(postID,token)
         return response.posts
     } catch (error) {
         return ThunkAPI.rejectWithValue(error.response)
     }
 })
 
-export const unlikePost = createAsyncThunk('posts/unlikePost',async({postId,token},ThunkAPI)=>{
+export const unlikePost = createAsyncThunk('posts/unlikePost',async({postID,token},ThunkAPI)=>{
     try {
-        const response = await unlikePostService(postId,token)
+        const response = await unlikePostService(postID,token)
         return response.posts
     } catch (error) {
         return ThunkAPI.rejectWithValue(error.response)

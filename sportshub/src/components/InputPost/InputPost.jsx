@@ -12,6 +12,7 @@ export const InputPost = () => {
     const [btnDisabled,setBtnDisabled] = useState(true)
 
 
+
     const changeHandler=(e)=>{
         if(e.target.value.trim() !== ''){
             setBtnDisabled(false)
@@ -25,7 +26,10 @@ export const InputPost = () => {
     const newPostHandler=()=>{
         dispatch(createPost({token,post:{content:postText}}))
         setPostText('')
+        setBtnDisabled(true)
     }
+
+    console.log(allPosts)
 
   return (
     <Flex gap='0.5rem' w='40rem' p='0.5rem' h='15rem' direction='column' border='1px' borderColor='primary'>

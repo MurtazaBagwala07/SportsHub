@@ -2,7 +2,7 @@ import { Flex,Avatar,Box, ButtonGroup,Button } from '@chakra-ui/react'
 import {FaHeart ,FaRegHeart,FaBookmark,FaRegBookmark,FaRegCommentAlt,FaEllipsisV } from 'react-icons/fa';
 import React,{useState} from 'react'
 import {openPostModal,closePostModal,setPostModalData} from '../../slices/utilitySlice'
-import {deletePost,likePost,unlikePost} from '../../slices/postSlice'
+import {deletePost,likePost,unlikePost,addBookmark,removeBookmark} from '../../slices/postSlice'
 import {useSelector,useDispatch} from 'react-redux'
 
 export const Post = ({post}) => {
@@ -10,8 +10,10 @@ export const Post = ({post}) => {
     const [optionModal,setOptionModal] = useState(false)
     const dispatch = useDispatch();
     const {token,user} = useSelector((store)=>store.auth)
+    const {bookmarks} = useSelector((store)=>store.posts)
 
     const isLiked = post?.likes?.likedBy?.some((likeby) => likeby.username === user.username)
+    const isBookmarked = bookmarks?.some((ele)=>ele._id===post._id)
     
     const editHandler=()=>{
         dispatch(openPostModal())
@@ -27,7 +29,7 @@ export const Post = ({post}) => {
     <Flex position='relative' w='34rem' minH='12rem' p='0.5rem' border='1px' borderColor='primary' direction='column' align="flex-start" justify='space-between'> 
         <Flex w='100%' direction='row' align='center' justify='space-between'>
         <Flex direction='row' align='flex-start' justify='center' gap='0.5rem'>
-            <Avatar size='md' name='Dan Abrahmov' src='' />
+            <Avatar size='md' name={post.name} src='' />
             <Flex align='flex-start' justify='center' fontSize='0.8rem' direction='column'>
                 <Box>{post.name}</Box> 
                 <Box>@{post.username}</Box>
@@ -38,14 +40,24 @@ export const Post = ({post}) => {
         <Box>{post.content}</Box>
         <Flex>
             <ButtonGroup>
+
                 {!isLiked &&
                     <Button onClick={()=>dispatch(likePost({postID:post._id,token}))} ><FaRegHeart/></Button>
                 }
                 {isLiked &&
                     <Button onClick={()=>dispatch(unlikePost({postID:post._id,token}))}><FaHeart/></Button>
                 }
+
                 <Button><FaRegCommentAlt/></Button> 
-                <Button><FaRegBookmark/></Button>
+
+                {!isBookmarked &&
+                    <Button onClick={()=>dispatch(addBookmark({postID:post._id,token}))}><FaRegBookmark/></Button>
+                }
+                {isBookmarked &&
+                    <Button onClick={()=>dispatch(removeBookmark({postID:post._id,token}))}><FaBookmark/></Button>
+                }
+
+                
             </ButtonGroup>
         </Flex>
         {optionModal &&

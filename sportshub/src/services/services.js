@@ -161,9 +161,9 @@ export const unlikePostService=async(postID,token)=>{
     }
 }
 
-export const addBookmarkService=async(postId,token)=>{
+export const addBookmarkService=async(postID,token)=>{
     try {
-        const response = await axios.post(`/api/users/bookmark/${postId}`,{},{
+        const response = await axios.post(`/api/users/bookmark/${postID}`,{},{
             headers:{
                 authorization:token,
             }
@@ -174,9 +174,9 @@ export const addBookmarkService=async(postId,token)=>{
     }
 }
 
-export const removeBookmarkService=async(postId,token)=>{
+export const removeBookmarkService=async(postID,token)=>{
     try {
-        const response = await axios.post(`/api/users/remove-bookmark/${postId}`,{},{
+        const response = await axios.post(`/api/users/remove-bookmark/${postID}`,{},{
             headers:{
                 authorization:token,
             }

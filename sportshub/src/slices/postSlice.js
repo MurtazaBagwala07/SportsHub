@@ -42,18 +42,18 @@ export const deletePost = createAsyncThunk('posts/deletePost',async({postID,toke
     }
 })
 
-export const addBookmark = createAsyncThunk('posts/addBookmark',async({postId,token},ThunkAPI)=>{
+export const addBookmark = createAsyncThunk('posts/addBookmark',async({postID,token},ThunkAPI)=>{
     try {
-        const response =await addBookmarkService(postId,token)
+        const response =await addBookmarkService(postID,token)
         return response.bookmarks
     } catch (error) {
         return ThunkAPI.rejectWithValue(error.response)
     }
 })
 
-export const removeBookmark = createAsyncThunk('posts/removeBookmark',async({postId,token},ThunkAPI)=>{
+export const removeBookmark = createAsyncThunk('posts/removeBookmark',async({postID,token},ThunkAPI)=>{
     try {
-        const response = await removeBookmarkService(postId,token)
+        const response = await removeBookmarkService(postID,token)
         return response.bookmarks
     } catch (error) {
         return ThunkAPI.rejectWithValue(error.response)

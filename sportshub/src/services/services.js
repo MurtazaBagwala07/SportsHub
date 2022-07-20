@@ -37,10 +37,10 @@ export const getAllPostsService=async()=>{
     }
 }
 
-export const createPostService=async(post,token)=>{
+export const createPostService=async(postData,token)=>{
     try {
         const response = await axios.post('/api/posts',{
-            post
+            postData
         },{
             headers:{
                 authorization:token
@@ -54,9 +54,9 @@ export const createPostService=async(post,token)=>{
     }
 }
 
-export const deletePostService=async(post,token)=>{
+export const deletePostService=async(postID,token)=>{
     try {
-        const response = await axios.delete(`/api/posts/${post._id}`,{
+        const response = await axios.delete(`/api/posts/${postID}`,{
             headers:{
                 authorization:token,
             }
@@ -69,10 +69,10 @@ export const deletePostService=async(post,token)=>{
     }
 }
 
-export const editPostService=async(postId,post,token)=>{
+export const editPostService=async(postID,postData,token)=>{
     try {
-        const response = await axios.post(`/api/posts/edit/${postId}`,{
-            post
+        const response = await axios.post(`/api/posts/edit/${postID}`,{
+            postData
         },{
             headers:{
                 authorization:token,
@@ -161,7 +161,7 @@ export const unlikePostService=async(postId,token)=>{
     }
 }
 
-export const addBookmark=async(postId,token)=>{
+export const addBookmarkService=async(postId,token)=>{
     try {
         const response = await axios.post(`/api/users/bookmark/${postId}`,{},{
             headers:{
@@ -174,7 +174,7 @@ export const addBookmark=async(postId,token)=>{
     }
 }
 
-export const removeBookmark=async(postId,token)=>{
+export const removeBookmarkService=async(postId,token)=>{
     try {
         const response = await axios.post(`/api/users/remove-bookmark/${postId}`,{},{
             headers:{

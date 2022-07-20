@@ -29,8 +29,6 @@ export const InputPost = () => {
         setBtnDisabled(true)
     }
 
-    console.log(allPosts)
-
   return (
     <Flex gap='0.5rem' w='40rem' p='0.5rem' h='15rem' direction='column' border='1px' borderColor='primary'>
         <Textarea onChange={(e)=>changeHandler(e)} name='postText' value={postText} resize='none' h='12rem' outline='none' border='none' placeholder='Whats Happening..?'>

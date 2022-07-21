@@ -19,7 +19,8 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>}></Route>
         <Route path='/mockman' element={<MockAPI/>}></Route>
-        <Route path='/profile/:user' element={<Profile/>}></Route>
+        <Route path='/user/:username' element={<Profile/>}></Route>
+        <Route path='/explore' ></Route>
         <Route path='/signup' element={<SignUp/>}></Route>
         <Route path='/signin' element={<SignIn/>}></Route>
         <Route path='userfeed' element={<Feed/>}></Route>

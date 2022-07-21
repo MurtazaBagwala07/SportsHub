@@ -186,3 +186,67 @@ export const removeBookmarkService=async(postID,token)=>{
         console.log(error)
     }
 }
+
+export const getUserService=async(userID)=>{
+    try {
+        const response = await axios.get(`/api/users/${userID}`)
+        return response.data
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const getUserPostsService=async(username)=>{
+    try {
+        const response = await axios.get(`/api/posts/user/${username}`);
+        return response.data
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const followUserService=async(userID,token)=>{
+    try {
+        const response = await axios.post(`/api/users/follow/${userID}`,{},{ 
+            headers: { authorization: token } 
+        })
+            return response.data
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const unfollowUserService=async(userID,token)=>{
+    try {
+        const response = await axios.post(`/api/users/unfollow/${userID}`,{},{
+            headers:{
+                authorization:token,
+            }
+        })
+        return response.data
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const editProfileService=async(token,userData)=>{
+    try {
+        const response = await axios.post(`/api/users/edit`,{userData},{
+          headers:{
+            authorization:token
+          }  
+        })
+        return response.data
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const getAllUsersService=async()=>{
+    try {
+        const response = await axios.get("/api/users");
+        return response.data
+    } catch (error) {
+        console.error(error)
+    }
+}

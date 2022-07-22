@@ -16,7 +16,7 @@ export const Navbar = () => {
         </Box>
         <Spacer/>
         {
-            pathname!=='/signin' && pathname!=='/signup' && 
+            pathname!=='/signin' && pathname!=='/signup' && pathname!=='/' &&
             <ButtonGroup color='primary'>
             <Button>
                 <Link to='/explore'>

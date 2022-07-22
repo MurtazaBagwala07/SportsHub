@@ -86,10 +86,27 @@ export const editPostService=async(postID,postData,token)=>{
     }
 }
 
-export const addCommentService=async(postId,comment,token)=>{
+export const addCommentService=async(postID,commentData,token)=>{
+    console.log(postID,commentData,token)
     try {
-        const response = await axios.post(`/api/comments/add/${postId}`,{
-            comment
+        const response = await axios.post(
+            `/api/comments/add/${postID}`,
+            { commentData },
+            { headers: { authorization: token } }
+        );
+        if(response.status===200||response.status===201){
+            console.log(response.data)
+            return response
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const editCommentService=async(postID,commentID,commentData,token)=>{
+    try {
+        const response = await axios.post(`/api/comments/edit/${postID}/${commentID}`,{
+            commentData,
         },{
             headers:{
                 authorization:token,
@@ -103,30 +120,14 @@ export const addCommentService=async(postId,comment,token)=>{
     }
 }
 
-export const editCommentService=async(postId,commentId,comment,token)=>{
+export const deleteCommentService =async(postID,commentID,token)=>{
+    
     try {
-        const response = await axios.post(`/api/comments/edit/${postId}/${commentId}`,{
-            comment,
-        },{
-            headers:{
-                authorization:token,
-            }
-        })
-        if(response.status===200||response.status===201){
-            return response.data
-        }
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-export const deleteCommentService =async(postId,commentId,token)=>{
-    try {
-        const response= await axios.delete(`/api/comments/delete/${postId}/${commentId}`,{
-            headers:{
-                authorization:token,
-            }
-        })
+        const response= await axios.post(
+            `/api/comments/delete/${postID}/${commentID}`,
+            {},
+            { headers: { authorization: token } }
+        );
         if(response.status===200||response.status){
             return response.data
         }

@@ -78,27 +78,28 @@ export const unlikePost = createAsyncThunk('posts/unlikePost',async({postID,toke
     }
 })
 
-export const addComment = createAsyncThunk('posts/addComment',async({postId,comment,token},ThunkAPI)=>{
+export const addComment = createAsyncThunk('posts/addComment',async({postID,commentData,token},ThunkAPI)=>{
     try {
-        const response = await addCommentService(postId,comment,token)
+        const response = await addCommentService(postID,commentData,token)
+        console.log(response)
+        return response.data.posts
+    } catch (error) {
+        return ThunkAPI.rejectWithValue(error.response)
+    }
+})
+
+export const editComment = createAsyncThunk('posts/editComment',async({postID,commentID,commentData,token},ThunkAPI)=>{
+    try {
+        const response = await editCommentService(postID,commentID,commentData,token)
         return response.posts
     } catch (error) {
         return ThunkAPI.rejectWithValue(error.response)
     }
 })
 
-export const editComment = createAsyncThunk('posts/editComment',async({postId,commentId,comment,token},ThunkAPI)=>{
+export const deleteComment = createAsyncThunk('posts/deleteComment',async({postID,commentID,token},ThunkAPI)=>{
     try {
-        const response = await editCommentService(postId,commentId,comment,token)
-        return response.posts
-    } catch (error) {
-        return ThunkAPI.rejectWithValue(error.response)
-    }
-})
-
-export const deleteComment = createAsyncThunk('posts/deleteComment',async({postId,comment,token},ThunkAPI)=>{
-    try {
-        const response = await deleteCommentService(postId,comment,token)
+        const response = await deleteCommentService(postID,commentID,token)
         return response.posts
     } catch (error) {
         return ThunkAPI.rejectWithValue(error.response)
@@ -143,17 +144,17 @@ export const postSlice=createSlice({
             state.allPosts= action.payload
         },
 
-        [addComment.fulfilled]:(state,action)=>{
-            state.allPosts= action.payload
-        },
+        // [addComment.fulfilled]:(state,action)=>{
+        //     state.allPosts= action.payload
+        // },
 
-        [editComment.fulfilled]:(state,action)=>{
-            state.allPosts= action.payload
-        },
+        // [editComment.fulfilled]:(state,action)=>{
+        //     state.allPosts= action.payload
+        // },
 
-        [deleteComment.fulfilled]:(state,action)=>{
-            state.allPosts= action.payload
-        },
+        // [deleteComment.fulfilled]:(state,action)=>{
+        //     state.allPosts= action.payload
+        // },
     }
 })
 

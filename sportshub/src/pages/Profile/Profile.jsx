@@ -7,6 +7,7 @@ import {getUser,getUserPost,follow,unfollow} from '../../slices/profileSlice'
 import {editProfileData} from '../../slices/profileSlice'
 import { openPostModal,openCommentModal,openProfileModal,closePostModal,closeCommentModal,closeProfileModal,setCommentModalData,setPostModalData,setProfileModalData } from '../../slices/utilitySlice'
 import {Post} from '../../components'
+import {isFollowing} from '../../utility/utility'
 
 
 export const Profile = () => {
@@ -18,13 +19,12 @@ export const Profile = () => {
   const {userProfile,userPosts} = useSelector((store)=>store.profile)
   const {user,token} = useSelector((store)=>store.auth)
   const {postModalState,postModalData,profileModalData,profileModalState,setProfileModalData} = useSelector((store)=>store.utilities)
-  const [editProfile,setEditProfile] = useState()
+  const [editProfile,setEditProfile] = useState();
 
 
-  
 
   useEffect(() => {
-      dispatch(getUser(user._id))
+      dispatch(getUser(userID))
   }, [userID])
 
   useEffect(() => {
@@ -42,6 +42,13 @@ export const Profile = () => {
     dispatch(closeProfileModal())
   }
 
+  const logoutHandler =()=>{
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    dispatch(logout())
+    navigate('/')
+  }
+
 
 
   return (
@@ -55,12 +62,15 @@ export const Profile = () => {
            { userID===user._id &&
             <ButtonGroup ml='auto'>
               <Button onClick={()=>editProfileHandler()}>Edit Profile</Button>
-              <Button>Logout</Button>
+              <Button onClick={()=>logoutHandler()}>Logout</Button>
             </ButtonGroup>
           }
             {userID!==user?._id &&
               <ButtonGroup ml='auto'>
-              <Button>Follow</Button>
+              {!isFollowing(userProfile?.followers,user?.username)?
+              (<Button onClick={()=>dispatch(follow({token, userID: userProfile?._id}))}>Follow</Button>) :
+              (<Button onClick={()=>dispatch(unfollow({token, userID: userProfile?._id}))}>Unfollow</Button>) 
+            }
             </ButtonGroup>}
           </Flex>
           <Box>@{userProfile.username}</Box>
@@ -68,8 +78,8 @@ export const Profile = () => {
           <Box>Favourite Athlete :  {userProfile.fav_Athlete}</Box>
           <Flex fontSize='1.5rem' w='100%' gap='6rem' direction='row' justify='flex-start' align='center' >
             <Text>{userPosts.length} Posts</Text>
-            <Text>4 Following</Text>
-            <Text>6 Followers</Text>
+            <Text>{userProfile?.following.length} Following</Text>
+            <Text>{userProfile?.followers.length} Followers</Text>
           </Flex>
         </Flex>
       </Flex>

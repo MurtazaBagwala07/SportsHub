@@ -216,7 +216,7 @@ export const followUserService=async(userID,token)=>{
     }
 }
 
-export const unfollowUserService=async(userID,token)=>{
+export const unfollowUserService=async(token,userID)=>{
     try {
         const response = await axios.post(`/api/users/unfollow/${userID}`,{},{
             headers:{

@@ -43,9 +43,9 @@ export const getUserPost = createAsyncThunk('profile/getUserPost',
 
 
 export const follow = createAsyncThunk('profile/follow',
-    async ({ userID, token }, ThunkAPI) => {
+    async ({  userID,token }, ThunkAPI) => {
         try {
-            const response = await followUserService(userID, token);
+            const response = await followUserService(userID,token);
             return response
         }
         catch (error) {
@@ -54,7 +54,7 @@ export const follow = createAsyncThunk('profile/follow',
     })
 
 export const unfollow = createAsyncThunk('profile/unfollow',
-    async ({ userID, token }, ThunkAPI) => {
+    async ({  userID,token }, ThunkAPI) => {
         try {
             const response = await unfollowUserService(userID, token);
             return response

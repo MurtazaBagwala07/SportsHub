@@ -32,7 +32,7 @@ export const Navbar = () => {
             <Button onClick={()=>{
                 navigate(`/user/${user?.username}`, { replace: true, state: { _id: user?._id } })
             }}>
-                    <Avatar name='User' size='sm'/>
+                    <Avatar name={user?.name} size='sm'/>
             </Button>
         </ButtonGroup>
         }

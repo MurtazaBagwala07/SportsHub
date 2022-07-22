@@ -21,13 +21,12 @@ export const SignIn = () => {
 
   useEffect(()=>{
     if(token){
-      navigate('/')
+      navigate('/userfeed')
     }
   },[token])
 
   const guestLoginHandler=()=>{
-    
-    console.log(loginForm)
+    dispatch(login({username:'sergioR',password:'sergioRamos'}))
   }
 
 

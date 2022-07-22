@@ -1,34 +1,47 @@
 import { Flex, Grid,Modal,ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,Button, Input,Box } from '@chakra-ui/react'
 import {InputPost, Post, SuggestionCard} from '../../components'
 import React,{useState,useEffect} from 'react'
-import {openPostModal,closePostModal,setPostModalData} from '../../slices/utilitySlice'
+import {openPostModal,closePostModal,setPostModalData,openCommentModal,closeCommentModal,setCommentModalData} from '../../slices/utilitySlice'
 import {useSelector,useDispatch} from 'react-redux'
-import { editPost,getAllPosts } from '../../slices/postSlice'
+import { editPost,getAllPosts,editComment } from '../../slices/postSlice'
 import {getAllUsers} from '../../slices/profileSlice'
 import {isFollowing} from '../../utility/utility'
 
 
 export const Feed = () => {
   const dispatch = useDispatch();
-  const {postModalState,postModalData} = useSelector((store)=>store.utilities)
+  const {postModalState,postModalData,commentModalState,commentModalData} = useSelector((store)=>store.utilities)
   const {allPosts} = useSelector((store)=>store.posts)
   const {allUsers} = useSelector((store)=>store.profile)
   const {token,user} = useSelector((store)=>store.auth)
   const [editPostContent,setEditPostContent] = useState(postModalData)
+  const [editCommentContent,setEditCommentContent] = useState(commentModalData)
 
   const editPostHandler=()=>{
     dispatch((editPost({postID:postModalData._id,postData:editPostContent,token})))
     dispatch(closePostModal())
   }
 
+  const editCommentHandler=()=>{
+    dispatch(editComment({ postID: editCommentContent.postID, commentID: editCommentContent._id, commentData: editCommentContent, token }))
+    dispatch(getAllPosts())
+    dispatch(closeCommentModal())
+  }
+
   useEffect(()=>{
     setEditPostContent(postModalData)
-  },[postModalData])
+    setEditCommentContent(commentModalData)
+  },[postModalData,commentModalData])
+
 
   useEffect(() => {
       dispatch(getAllUsers());
       dispatch(getAllPosts())
   },[])
+
+  console.log(allPosts)
+
+
   const loggedInUser = allUsers.find((userData) => userData?.username === user?.username)
   const feedPosts = allPosts?.filter((postData) => (postData?.username === user?.username) || isFollowing(loggedInUser?.following, postData.username))
   const suggestedUsers = allUsers?.filter((currUser) => (currUser._id !== user?._id) && !isFollowing(currUser?.followers, user?.username))
@@ -68,6 +81,23 @@ export const Feed = () => {
               Update
             </Button>
             <Button variant='ghost' onClick={()=>dispatch(closePostModal())}>Close</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={commentModalState} onClose={()=>dispatch(closeCommentModal())}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Modal Title</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Input onChange={(e)=>setEditCommentContent({...commentModalData,text:e.target.value})} value={editCommentContent?.text}></Input>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme='blue' onClick={()=>editCommentHandler()} mr={3} >
+              Update
+            </Button>
+            <Button variant='ghost' onClick={()=>dispatch(closeCommentModal())}>Close</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

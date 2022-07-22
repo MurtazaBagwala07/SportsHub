@@ -22,6 +22,7 @@ export const posts = [
         profilePicture: "",
         createdAt: formatDate(),
         updatedAt: formatDate(),
+        comments: [],
     },
     {
         _id: '8bfabb5a-498b-45f4-b19c-7267a889845f',
@@ -38,6 +39,7 @@ export const posts = [
         profilePicture: "",
         createdAt: formatDate(),
         updatedAt: formatDate(),
+        comments: [],
     },
     {
         _id: 'e4b2aa17-a057-49ba-95ca-3d00fcdf4ecd',
@@ -54,6 +56,7 @@ export const posts = [
         profilePicture: "",
         createdAt: formatDate(),
         updatedAt: formatDate(),
+        comments: [],
     },
     {
         _id: '1b67243d-08a2-4523-a1fc-260af5586634',
@@ -70,6 +73,7 @@ export const posts = [
         profilePicture: "",
         createdAt: formatDate(),
         updatedAt: formatDate(),
+        comments: [],
     },
     {
         _id: '3a70dfa4-c71c-4136-a30c-19bcb2bf55ba',
@@ -86,6 +90,7 @@ export const posts = [
         profilePicture: "",
         createdAt: formatDate(),
         updatedAt: formatDate(),
+        comments: [],
     },
     {
         _id: '61657692-05c4-4dc8-aa25-1fca4e83e77b',
@@ -102,5 +107,18 @@ export const posts = [
         profilePicture: "",
         createdAt: formatDate(),
         updatedAt: formatDate(),
+        comments: [
+          {
+          createdAt: "2022-07-22T17:31:49+05:30",
+          postID: "8bfabb5a-498b-45f4-b19c-7267a889845f",
+          text: "dsfsd",
+          updatedAt: "2022-07-22T17:31:49+05:30",
+          userID: "1",
+          username: "djoker",
+          name:'Novak',
+          votes: {upvotedBy: Array(0), downvotedBy: Array(0)},
+          _id: "5e7a5eeb-67cf-48f8-ab57-a9ecde5"
+        },
+        ],
     },
 ];

@@ -12,16 +12,16 @@ export const Explore = () => {
 
     const explorePosts = allPosts?.filter((post) => post.username!==user?.username)
 
-    console.log(explorePosts)
-
     useEffect(() =>{
         dispatch(getAllPosts())
     },[])
     
+    console.log(allPosts)
+
   return (
     <Flex minH='90vh' mx='8rem' py='3rem' mb='2rem' justify='center' align='flex-start' >
-        <Flex direction='column' gap='1rem'>
-        {explorePosts.map((post)=>(
+        <Flex direction='column' gap='2rem'>
+        {explorePosts?.map((post)=>(
             <Post key={post._id} post={post}/>
         ))}
         </Flex>

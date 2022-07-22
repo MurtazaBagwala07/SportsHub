@@ -8,7 +8,6 @@ import {getAllUsers} from '../../slices/profileSlice'
 import {isFollowing} from '../../utility/utility'
 
 
-
 export const Feed = () => {
   const dispatch = useDispatch();
   const {postModalState,postModalData} = useSelector((store)=>store.utilities)
@@ -16,7 +15,6 @@ export const Feed = () => {
   const {allUsers} = useSelector((store)=>store.profile)
   const {token,user} = useSelector((store)=>store.auth)
   const [editPostContent,setEditPostContent] = useState(postModalData)
-
 
   const editPostHandler=()=>{
     dispatch((editPost({postID:postModalData._id,postData:editPostContent,token})))
@@ -31,17 +29,18 @@ export const Feed = () => {
       dispatch(getAllUsers());
       dispatch(getAllPosts())
   },[])
-
+  const loggedInUser = allUsers.find((userData) => userData?.username === user?.username)
+  const feedPosts = allPosts?.filter((postData) => (postData?.username === user?.username) || isFollowing(loggedInUser?.following, postData.username))
   const suggestedUsers = allUsers?.filter((currUser) => (currUser._id !== user?._id) && !isFollowing(currUser?.followers, user?.username))
-  console.log(allUsers)
-  
+  const postsForFeed = feedPosts.reverse() 
+
   return (
     <Flex h='90vh' mx='8rem' py='1rem'>
         <Grid templateColumns='4fr 2fr' w='100vw' gap='5rem' columns={2}>
             <Flex gap='2rem' direction='column' align='center'>
                 <InputPost/>
                 {
-                  allPosts.map((post)=>(
+                  postsForFeed.map((post)=>(
                     <Post post={post} key={post._id}/>
                   ))
                   }

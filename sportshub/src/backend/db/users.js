@@ -7,7 +7,7 @@ import { formatDate } from "../utils/authUtils";
 
 export const users = [
   {
-    _id: uuid(),
+    _id: 'd0256cee-862b-4fe5-852d-f12392e52a95',
     name:'Sergio',
     username: "sergioR",
     password: "sergioRamos",
@@ -21,7 +21,7 @@ export const users = [
     updatedAt: formatDate(),
   },
   {
-    _id: uuid(),
+    _id: 'cfc37be2-44e4-45a8-b082-7aa17a1dcf99',
     name:'Eder',
     username: "ederM",
     password: "ederMilitao",
@@ -35,7 +35,7 @@ export const users = [
     updatedAt: formatDate(),
   },
   {
-    _id: uuid(),
+    _id: 'b8964c6c-344d-40bd-b5fe-e9fd31d24ca2',
     name:'Novak',
     username: "djoker",
     password: "djokovic",

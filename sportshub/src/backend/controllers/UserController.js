@@ -19,7 +19,7 @@ export const getAllUsersHandler = function () {
  * send GET Request at /api/users/:userId
  * */
 
-export const getUserHandler = function (schema, request) {
+ export const getUserHandler = function (schema, request) {
   const userId = request.params.userId;
   try {
     const user = schema.users.findBy({ _id: userId }).attrs;

@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit'
 
 const initialState={
-    postModalState : false ,
+    postModalState : false,
     postModalData : null,
     commentModalState : false,
     commentModalData : null,

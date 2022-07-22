@@ -1,9 +1,11 @@
-import { Flex, Grid,Modal,ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,Button, Input } from '@chakra-ui/react'
-import {InputPost, Post} from '../../components'
+import { Flex, Grid,Modal,ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,Button, Input,Box } from '@chakra-ui/react'
+import {InputPost, Post, SuggestionCard} from '../../components'
 import React,{useState,useEffect} from 'react'
 import {openPostModal,closePostModal,setPostModalData} from '../../slices/utilitySlice'
 import {useSelector,useDispatch} from 'react-redux'
-import { editPost } from '../../slices/postSlice'
+import { editPost,getAllPosts } from '../../slices/postSlice'
+import {getAllUsers} from '../../slices/profileSlice'
+import {isFollowing} from '../../utility/utility'
 
 
 
@@ -11,8 +13,10 @@ export const Feed = () => {
   const dispatch = useDispatch();
   const {postModalState,postModalData} = useSelector((store)=>store.utilities)
   const {allPosts} = useSelector((store)=>store.posts)
-  const {token} = useSelector((store)=>store.auth)
+  const {allUsers} = useSelector((store)=>store.profile)
+  const {token,user} = useSelector((store)=>store.auth)
   const [editPostContent,setEditPostContent] = useState(postModalData)
+
 
   const editPostHandler=()=>{
     dispatch((editPost({postID:postModalData._id,postData:editPostContent,token})))
@@ -23,7 +27,13 @@ export const Feed = () => {
     setEditPostContent(postModalData)
   },[postModalData])
 
+  useEffect(() => {
+      dispatch(getAllUsers());
+      dispatch(getAllPosts())
+  },[])
 
+  const suggestedUsers = allUsers?.filter((currUser) => (currUser._id !== user?._id) && !isFollowing(currUser?.followers, user?.username))
+  console.log(allUsers)
   
   return (
     <Flex h='90vh' mx='8rem' py='1rem'>
@@ -36,7 +46,14 @@ export const Feed = () => {
                   ))
                   }
             </Flex>
-            <Flex>Suggestion Box</Flex>
+            <Flex w='80%' direction='column' gap='0.5rem' align='flex-start' justify='flex-start' borderColor='primary' p='0.5rem'>
+                <Box textAlign='left' w='100%' fontSize='1.5rem'>Suggested Users</Box>
+                <Flex w='100%' direction='column' >
+                  {suggestedUsers.map((user)=>(
+                    <SuggestionCard key={user._id} userSuggestion={user}/>
+                  ))}
+                </Flex>
+            </Flex>
         </Grid>
         
         <Modal isOpen={postModalState} onClose={()=>dispatch(closePostModal())}>

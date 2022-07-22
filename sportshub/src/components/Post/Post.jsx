@@ -35,7 +35,7 @@ export const Post = ({post}) => {
                 <Box>@{post.username}</Box>
             </Flex>
         </Flex>
-        <Button onClick={()=>setOptionModal(!optionModal)}><FaEllipsisV/></Button>
+        {post.userId===user._id && <Button onClick={()=>setOptionModal(!optionModal)}><FaEllipsisV/></Button>}
         </Flex>
         <Box>{post.content}</Box>
         <Flex>

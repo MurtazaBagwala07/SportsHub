@@ -48,4 +48,18 @@ export const users = [
     createdAt: formatDate(),
     updatedAt: formatDate(),
   },
+  {
+    _id: '6df71771-8722-4ad7-ad99-fcc7a2440915',
+    name:'Warne',
+    username: "rockkstar",
+    password: "rockkybhai",
+    fav_Sport: 'Cricket',
+    fav_Athlete: 'Jadeja',
+    profilePicture: '',
+    followers:[],
+    following:[],
+    bookmarks: [],
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+  },
 ];

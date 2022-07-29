@@ -11,7 +11,7 @@ export const SuggestionCard = ({userSuggestion}) => {
 
   return (
     <Flex gap='1rem' justify='flex-start' align='center' p='0.25rem'>
-        <Avatar size='sm' name={userSuggestion?.name}/>
+        <Avatar cursor='pointer' onClick={()=>navigate(`/user/${userSuggestion?.username}`, { replace: true, state: { _id: userSuggestion?._id } })} size='sm' name={userSuggestion?.name}/>
         <Flex direction='column' align='flex-start' justify='center'>
             <Box fontSize='1rem'>{userSuggestion?.name}</Box>
             <Box fontSize='0.75rem'>@{userSuggestion?.username}</Box>

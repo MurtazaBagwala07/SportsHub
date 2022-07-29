@@ -34,7 +34,7 @@ export const Post = ({post}) => {
     <Flex position='relative' w='34rem' gap='1rem' p='1rem' boxShadow='lg' borderColor='primary' direction='column' align="flex-start" justify='space-between'> 
         <Flex w='100%' direction='row' align='center' justify='space-between'>
         <Flex direction='row' align='flex-start' justify='center' gap='0.5rem'>
-            <Avatar onClick={()=>navigate(`/user/${post?.username}`, { replace: true, state: { _id: post?.userId } })} size='md' name={post.name} src='' />
+            <Avatar cursor='pointer' onClick={()=>navigate(`/user/${post?.username}`, { replace: true, state: { _id: post?.userId } })} size='md' name={post.name} src='' />
             <Flex align='flex-start' justify='center' fontSize='0.8rem' direction='column'>
                 <Box>{post.name}</Box> 
                 <Box>@{post.username}</Box>

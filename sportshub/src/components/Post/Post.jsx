@@ -6,6 +6,7 @@ import {deletePost,likePost,unlikePost,addBookmark,removeBookmark} from '../../s
 import {useSelector,useDispatch} from 'react-redux'
 import { CommentContainer } from '../CommentContainer/CommentContainer';
 import {useNavigate} from 'react-router-dom'
+import { toastHandler } from '../../utility/utility';
 
 export const Post = ({post}) => {
 
@@ -26,6 +27,7 @@ export const Post = ({post}) => {
 
     const deleteHandler=()=>{
         dispatch(deletePost({postID:post._id,token}))
+        toastHandler('success','Post deleted successfully')
     }
 
 
@@ -46,17 +48,17 @@ export const Post = ({post}) => {
         <Flex>
             <ButtonGroup>
                 {!isLiked &&
-                    <Button onClick={()=>dispatch(likePost({postID:post._id,token}))} ><FaRegHeart/></Button>
+                    <Button onClick={()=>{dispatch(likePost({postID:post._id,token})); toastHandler('success','Post has been liked')}} ><FaRegHeart/></Button>
                 }
                 {isLiked &&
-                    <Button onClick={()=>dispatch(unlikePost({postID:post._id,token}))}><FaHeart/></Button>
+                    <Button onClick={()=>{dispatch(unlikePost({postID:post._id,token})); toastHandler('success','Post has been unliked')}}><FaHeart/></Button>
                 }
 
                 {!isBookmarked &&
-                    <Button onClick={()=>dispatch(addBookmark({postID:post._id,token}))}><FaRegBookmark/></Button>
+                    <Button onClick={()=>{dispatch(addBookmark({postID:post._id,token})); toastHandler('success','Post added to bookmarks')}}><FaRegBookmark/></Button>
                 }
                 {isBookmarked &&
-                    <Button onClick={()=>dispatch(removeBookmark({postID:post._id,token}))}><FaBookmark/></Button>
+                    <Button onClick={()=>{dispatch(removeBookmark({postID:post._id,token})); toastHandler('success','Post removed from bookmarks')}}><FaBookmark/></Button>
                 }
 
             </ButtonGroup>

@@ -5,7 +5,7 @@ import {openPostModal,closePostModal,setPostModalData,openCommentModal,closeComm
 import {useSelector,useDispatch} from 'react-redux'
 import { editPost,getAllPosts,editComment } from '../../slices/postSlice'
 import {getAllUsers} from '../../slices/profileSlice'
-import {isFollowing} from '../../utility/utility'
+import {isFollowing,toastHandler} from '../../utility/utility'
 
 
 export const Feed = () => {
@@ -18,11 +18,13 @@ export const Feed = () => {
   const [editCommentContent,setEditCommentContent] = useState(commentModalData)
 
   const editPostHandler=()=>{
+    toastHandler('success','Post Edited Successfully')
     dispatch((editPost({postID:postModalData._id,postData:editPostContent,token})))
     dispatch(closePostModal())
   }
 
   const editCommentHandler=()=>{
+    toastHandler('success','Comment Edited Successfully')
     dispatch(editComment({ postID: editCommentContent.postID, commentID: editCommentContent._id, commentData: editCommentContent, token }))
     dispatch(getAllPosts())
     dispatch(closeCommentModal())
@@ -38,7 +40,6 @@ export const Feed = () => {
       dispatch(getAllUsers());
       dispatch(getAllPosts())
   },[])
-
 
 
   const loggedInUser = allUsers.find((userData) => userData?.username === user?.username)

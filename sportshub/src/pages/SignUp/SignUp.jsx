@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import {useDispatch,useSelector} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 import { signUp } from '../../slices/authSlice'
+import { toastHandler } from '../../utility/utility'
 
 export const SignUp = () => {
 
@@ -21,6 +22,11 @@ export const SignUp = () => {
   )
 
   const signUpHandler=()=>{
+
+    if(signUpForm.name===''||signUpForm.username===''||signUpForm.email===''||signUpForm.password===''){
+      toastHandler('warn','Enter correct details')
+      return
+    }
     dispatch(signUp(signUpForm))
     navigate('/signin')
   }

@@ -2,6 +2,7 @@ import { Button, Flex, Textarea } from '@chakra-ui/react'
 import React,{useState} from 'react'
 import {useSelector,useDispatch} from 'react-redux'
 import { createPost,getAllPosts } from '../../slices/postSlice'
+import { toastHandler } from '../../utility/utility'
 
 export const InputPost = () => {
 
@@ -25,6 +26,7 @@ export const InputPost = () => {
 
     const newPostHandler=()=>{
         dispatch(createPost({token,post:{content:postText}}))
+        toastHandler('success','New post has been created')
         setPostText('')
         setBtnDisabled(true)
     }

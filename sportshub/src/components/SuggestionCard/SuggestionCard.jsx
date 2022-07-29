@@ -3,6 +3,7 @@ import React from 'react'
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import {follow} from '../../slices/profileSlice'
+import {toastHandler} from '../../utility/utility'
 
 export const SuggestionCard = ({userSuggestion}) => {
     const navigate = useNavigate()
@@ -16,7 +17,7 @@ export const SuggestionCard = ({userSuggestion}) => {
             <Box fontSize='1rem'>{userSuggestion?.name}</Box>
             <Box fontSize='0.75rem'>@{userSuggestion?.username}</Box>
         </Flex>
-        <Button onClick={()=>dispatch(follow({token,userID:userSuggestion._id}))} ml='auto'>Follow</Button>
+        <Button onClick={()=>{dispatch(follow({token,userID:userSuggestion._id})); toastHandler('success', 'User Followed')}} ml='auto'>Follow</Button>
     </Flex>
   )
 }

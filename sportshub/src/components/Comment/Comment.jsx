@@ -4,6 +4,7 @@ import {useSelector,useDispatch} from 'react-redux'
 import React,{useState} from 'react'
 import {openCommentModal,setCommentModalData} from '../../slices/utilitySlice'
 import { deleteComment,getAllPosts } from '../../slices/postSlice';
+import {toastHandler} from '../../utility/utility'
 
 export const Comment = ({comment}) => {
 
@@ -36,6 +37,7 @@ export const Comment = ({comment}) => {
             
             <Flex onClick={()=>{
                 dispatch(deleteComment({postID:comment.postID,commentID: comment._id,token}))
+                toastHandler('success','Comment deleted successfully')
                 setCommentOptionModal(false)
                 dispatch(getAllPosts())
             }}>Delete</Flex>

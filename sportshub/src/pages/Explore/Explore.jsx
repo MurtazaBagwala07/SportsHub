@@ -4,6 +4,7 @@ import { useSelector,useDispatch } from 'react-redux'
 import { Post } from '../../components'
 import {closeCommentModal} from '../../slices/utilitySlice'
 import { getAllPosts,editComment } from '../../slices/postSlice'
+import { toastHandler } from '../../utility/utility'
 
 export const Explore = () => {
 
@@ -19,6 +20,7 @@ export const Explore = () => {
   
     const editCommentHandler=()=>{
       dispatch(editComment({ postID: editCommentContent.postID, commentID: editCommentContent._id, commentData: editCommentContent, token }))
+      toastHandler('success','Comment Edited Successfully')
       dispatch(getAllPosts())
       dispatch(closeCommentModal())
     }

@@ -3,6 +3,7 @@ import React,{useState,useEffect} from 'react'
 import { Link ,useNavigate } from 'react-router-dom'
 import {login} from '../../slices/authSlice'
 import {useDispatch,useSelector} from 'react-redux'
+import {toastHandler} from '../../utility/utility'
 
 export const SignIn = () => {
 
@@ -16,12 +17,19 @@ export const SignIn = () => {
   })
 
   const loginHandler=()=>{
-    dispatch(login(loginForm))
+
+    if(loginForm.username===''||loginForm.password===''){
+      toastHandler('warn','Enter correct details')
+    }else{
+      dispatch(login(loginForm))
+    }
+
   }
 
   useEffect(()=>{
     if(token){
       navigate('/userfeed')
+      toastHandler('success','Logged In Successfully')
     }
   },[token])
 

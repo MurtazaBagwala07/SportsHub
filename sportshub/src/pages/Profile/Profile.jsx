@@ -7,7 +7,7 @@ import {getUser,getUserPost,follow,unfollow,editProfileData} from '../../slices/
 import { editPost,getAllPosts,editComment } from '../../slices/postSlice'
 import { openPostModal,openCommentModal,openProfileModal,closePostModal,closeCommentModal,closeProfileModal,setCommentModalData,setPostModalData,setProfileModalData } from '../../slices/utilitySlice'
 import {Post} from '../../components'
-import {isFollowing} from '../../utility/utility'
+import {isFollowing,toastHandler} from '../../utility/utility'
 
 
 export const Profile = () => {
@@ -18,11 +18,12 @@ export const Profile = () => {
   const userID = location?.state._id
   const {userProfile,userPosts} = useSelector((store)=>store.profile)
   const {user,token} = useSelector((store)=>store.auth)
+  const {allPosts} = useSelector((store)=>store.posts)
   const {postModalState,postModalData,profileModalData,profileModalState,setProfileModalData,commentModalState,commentModalData} = useSelector((store)=>store.utilities)
   const [editProfile,setEditProfile] = useState();
   const [editPostContent,setEditPostContent] = useState(postModalData)
   const [editCommentContent,setEditCommentContent] = useState(commentModalData)
-
+  const [profilePosts,setProfilePosts] = useState([])
 
 
   useEffect(() => {
@@ -31,16 +32,23 @@ export const Profile = () => {
 
   useEffect(() => {
       dispatch(getUserPost(username))
-  }, [userProfile])
+      dispatch(getAllPosts())
+      const filter = allPosts.filter((post)=>post.username===username.username)
+      setProfilePosts(filter)
+    }, [userProfile,allPosts])
 
   const editPostHandler=()=>{
+    toastHandler('success','Post Edited Successfully')
     dispatch((editPost({postID:postModalData._id,postData:editPostContent,token})))
+    dispatch(getUserPost(username))
     dispatch(closePostModal())
   }
 
   const editCommentHandler=()=>{
+    toastHandler('success','Comment Edited Successfully')
     dispatch(editComment({ postID: editCommentContent.postID, commentID: editCommentContent._id, commentData: editCommentContent, token }))
     dispatch(getAllPosts())
+    dispatch(getUserPost(username))
     dispatch(closeCommentModal())
   }
 
@@ -56,6 +64,7 @@ export const Profile = () => {
 
   const updateProfileHandler =()=>{
     dispatch(editProfileData({token,userData: editProfile}))
+    toastHandler('success','Profile Edited Successfully')
     dispatch(closeProfileModal())
   }
 
@@ -63,10 +72,9 @@ export const Profile = () => {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
     dispatch(logout())
+    toastHandler('success','Logged Out successfully')
     navigate('/')
   }
-
-
 
   return (
     <>
@@ -85,8 +93,8 @@ export const Profile = () => {
             {userID!==user?._id &&
               <ButtonGroup ml='auto'>
               {!isFollowing(userProfile?.followers,user?.username)?
-              (<Button onClick={()=>dispatch(follow({token, userID: userProfile?._id}))}>Follow</Button>) :
-              (<Button onClick={()=>dispatch(unfollow({token, userID: userProfile?._id}))}>Unfollow</Button>) 
+              (<Button onClick={()=>{dispatch(follow({token, userID: userProfile?._id})); toastHandler('success','User Followed')}}>Follow</Button>) :
+              (<Button onClick={()=>{dispatch(unfollow({token, userID: userProfile?._id})); toastHandler('success','User Unfollowed')}}>Unfollow</Button>) 
             }
             </ButtonGroup>}
           </Flex>
@@ -94,7 +102,7 @@ export const Profile = () => {
           <Box>Favourite Sport : {userProfile?.fav_Sport}</Box>
           <Box>Favourite Athlete :  {userProfile?.fav_Athlete}</Box>
           <Flex fontSize='1.5rem' w='100%' gap='6rem' direction='row' justify='flex-start' align='center' >
-            <Text>{userPosts.length} Posts</Text>
+            <Text>{profilePosts?.length} Posts</Text>
             <Text>{userProfile?.following?.length} Following</Text>
             <Text>{userProfile?.followers?.length} Followers</Text>
           </Flex>
@@ -102,7 +110,7 @@ export const Profile = () => {
       </Flex>
 
       <Flex direction='column' align='center' gap='2rem' justify='center' w='100%' py='1rem' px='3rem' >
-              {userPosts.map((post)=>(
+              {profilePosts?.map((post)=>(
                 <Post key={post._id} post={post}/>
               ))}
       </Flex>

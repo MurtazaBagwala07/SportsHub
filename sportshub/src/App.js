@@ -1,7 +1,7 @@
 import "./App.css";
 import { Routes,Route } from "react-router-dom";
 import Mockman from "mockman-js";
-import {Home,Profile,SignUp,SignIn,Feed, Explore, Bookmark} from './pages'
+import {Home,Profile,SignUp,SignIn,Feed, Explore, Bookmark,NotFound} from './pages'
 import {Navbar} from './components'
 
 function MockAPI() {
@@ -25,6 +25,7 @@ function App() {
         <Route path='/signin' element={<SignIn/>}></Route>
         <Route path='userfeed' element={<Feed/>}></Route>
         <Route path='bookmarks' element={<Bookmark/>}></Route>
+        <Route path='*' element={<NotFound/>}></Route>
       </Routes>
     </div>
   );

@@ -3,8 +3,8 @@ import React,{useEffect,useState} from 'react'
 import {useSelector,useDispatch} from 'react-redux'
 import {useParams,useLocation,useNavigate} from 'react-router-dom'
 import {logout} from '../../slices/authSlice'
-import {getUser,getUserPost,follow,unfollow} from '../../slices/profileSlice'
-import {editProfileData} from '../../slices/profileSlice'
+import {getUser,getUserPost,follow,unfollow,editProfileData} from '../../slices/profileSlice'
+import { editPost,getAllPosts,editComment } from '../../slices/postSlice'
 import { openPostModal,openCommentModal,openProfileModal,closePostModal,closeCommentModal,closeProfileModal,setCommentModalData,setPostModalData,setProfileModalData } from '../../slices/utilitySlice'
 import {Post} from '../../components'
 import {isFollowing} from '../../utility/utility'
@@ -18,8 +18,10 @@ export const Profile = () => {
   const userID = location?.state._id
   const {userProfile,userPosts} = useSelector((store)=>store.profile)
   const {user,token} = useSelector((store)=>store.auth)
-  const {postModalState,postModalData,profileModalData,profileModalState,setProfileModalData} = useSelector((store)=>store.utilities)
+  const {postModalState,postModalData,profileModalData,profileModalState,setProfileModalData,commentModalState,commentModalData} = useSelector((store)=>store.utilities)
   const [editProfile,setEditProfile] = useState();
+  const [editPostContent,setEditPostContent] = useState(postModalData)
+  const [editCommentContent,setEditCommentContent] = useState(commentModalData)
 
 
 
@@ -31,6 +33,21 @@ export const Profile = () => {
       dispatch(getUserPost(username))
   }, [userProfile])
 
+  const editPostHandler=()=>{
+    dispatch((editPost({postID:postModalData._id,postData:editPostContent,token})))
+    dispatch(closePostModal())
+  }
+
+  const editCommentHandler=()=>{
+    dispatch(editComment({ postID: editCommentContent.postID, commentID: editCommentContent._id, commentData: editCommentContent, token }))
+    dispatch(getAllPosts())
+    dispatch(closeCommentModal())
+  }
+
+  useEffect(()=>{
+    setEditPostContent(postModalData)
+    setEditCommentContent(commentModalData)
+  },[postModalData,commentModalData])
 
   const editProfileHandler =()=>{
     dispatch(openProfileModal())
@@ -74,12 +91,12 @@ export const Profile = () => {
             </ButtonGroup>}
           </Flex>
           <Box>@{userProfile.username}</Box>
-          <Box>Favourite Sport : {userProfile.fav_Sport}</Box>
-          <Box>Favourite Athlete :  {userProfile.fav_Athlete}</Box>
+          <Box>Favourite Sport : {userProfile?.fav_Sport}</Box>
+          <Box>Favourite Athlete :  {userProfile?.fav_Athlete}</Box>
           <Flex fontSize='1.5rem' w='100%' gap='6rem' direction='row' justify='flex-start' align='center' >
             <Text>{userPosts.length} Posts</Text>
-            <Text>{userProfile?.following.length} Following</Text>
-            <Text>{userProfile?.followers.length} Followers</Text>
+            <Text>{userProfile?.following?.length} Following</Text>
+            <Text>{userProfile?.followers?.length} Followers</Text>
           </Flex>
         </Flex>
       </Flex>
@@ -108,6 +125,40 @@ export const Profile = () => {
               Update
             </Button>
             <Button variant='ghost' onClick={()=>dispatch(closeProfileModal())}>Close</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={postModalState} onClose={()=>dispatch(closePostModal())}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit Post</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Input onChange={(e)=>setEditPostContent({...postModalData,content:e.target.value})} value={editPostContent?.content}></Input>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme='blue' onClick={()=>editPostHandler()} mr={3} >
+              Update
+            </Button>
+            <Button variant='ghost' onClick={()=>dispatch(closePostModal())}>Close</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={commentModalState} onClose={()=>dispatch(closeCommentModal())}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit Comment</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Input onChange={(e)=>setEditCommentContent({...commentModalData,text:e.target.value})} value={editCommentContent?.text}></Input>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme='blue' onClick={()=>editCommentHandler()} mr={3} >
+              Update
+            </Button>
+            <Button variant='ghost' onClick={()=>dispatch(closeCommentModal())}>Close</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
